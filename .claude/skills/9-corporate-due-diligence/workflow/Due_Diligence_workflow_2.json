@@ -1,0 +1,632 @@
+{
+  "version": "32.7.5",
+  "pages": [
+    {
+      "id": "xStGg3alXMde0ocJ-owQ",
+      "name": "Page-1",
+      "cells": [
+        {
+          "id": "1",
+          "type": "layer"
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "type": "node",
+          "parent": "1",
+          "metadata": {
+            "mermaidData": "{\n  \"data\": \"graph TD\\n    %% ΟΡΙΣΜΟΣ ΦΑΣΕΩΝ (SUBGRAPHS)\\n    \\n    subgraph Phase_1 [ΦΑΣΗ 1: Παράλληλη Ανάκτηση Δεδομένων & ETL]\\n        direction TB\\n        DB1[(ERP System: SAP/Oracle)]\\n        DB2[(CRM System: Salesforce)]\\n        API1[/Bank API: Ταμειακές Ροές/]\\n        DOC1[/PDFs: Ισολογισμοί & Συμβάσεις/]\\n        \\n        ETL[Μηχανισμός ETL & AI Data Extraction: Ενοποίηση Δεδομένων]\\n        \\n        DB1 --> ETL\\n        DB2 --> ETL\\n        API1 --> ETL\\n        DOC1 --> ETL\\n    end\\n\\n    subgraph Phase_2 [ΦΑΣΗ 2: Διασταύρωση & Συμφωνία Δεδομένων]\\n        direction TB\\n        RECON_DEC{\\\"Είναι τα δεδομένα Συμφωνημένα; (Reconciliation Check)\\\"}\\n        RECON_FIX[Manual Adjustments: Επικοινωνία με Πελάτη για διορθώσεις]\\n        DATA_READY([Εγκεκριμένο Data Lake για Ανάλυση])\\n        \\n        ETL --> RECON_DEC\\n        RECON_DEC -->|ΟΧΙ: Ασυμφωνία| RECON_FIX\\n        RECON_FIX -->|Επανατροφοδότηση Δεδομένων| ETL\\n        RECON_DEC -->|ΝΑΙ: 100% Match| DATA_READY\\n    end\\n\\n    subgraph Phase_3 [ΦΑΣΗ 3: Παράλληλη Οικονομική Ανάλυση]\\n        direction TB\\n        FORK_1((Διακλάδωση))\\n        \\n        AN_FIN[Financial Analysis: Δείκτες, Ρευστότητα, Κεφάλαιο Κίνησης]\\n        AN_OP[Operational Analysis: Περιθώρια Ανά Πελάτη, CRM Churn]\\n        AN_RISK[Compliance & Risk: Έλεγχος Συμβάσεων & Επισφαλειών]\\n        \\n        DATA_READY --> FORK_1\\n        FORK_1 --> AN_FIN\\n        FORK_1 --> AN_OP\\n        FORK_1 --> AN_RISK\\n    end\\n\\n    subgraph Phase_4 [ΦΑΣΗ 4: Δέντρο Στρατηγικής Αξιολόγησης]\\n        direction TB\\n        RED_FLAG_DEC{\\\"Εντοπίστηκε Κρίσιμος Κίνδυνος / Απάτη;\\\"}\\n        \\n        GOING_CONCERN_DEC{\\\"Βιωσιμότητα: Είναι η εταιρεία Going Concern;\\\"}\\n        \\n        VAL_DCF[Αποτίμηση DCF: Προεξόφληση Μελλοντικών Ταμειακών Ροών]\\n        VAL_LIQ[Αποτίμηση Liquidation: Εκποίηση Περιουσιακών Στοιχείων]\\n        \\n        CRISIS_JUMP[Άμεση Διακοπή Ανάλυσης: Σήμανση Red Flag]\\n        \\n        AN_RISK --> RED_FLAG_DEC\\n        AN_FIN --> GOING_CONCERN_DEC\\n        AN_OP --> GOING_CONCERN_DEC\\n        \\n        RED_FLAG_DEC -->|ΝΑΙ: Κρίσιμο Εύρημα| CRISIS_JUMP\\n        RED_FLAG_DEC -->|ΟΧΙ: Καθαρό| GOING_CONCERN_DEC\\n        \\n        GOING_CONCERN_DEC -->|ΝΑΙ: Υγιής / Αναστρέψιμη| VAL_DCF\\n        GOING_CONCERN_DEC -->|ΟΧΙ: Τεχνική Πτώχευση| VAL_LIQ\\n    end\\n\\n    subgraph Phase_5 [ΦΑΣΗ 5: Σύνθεση & Review Workflow]\\n        direction TB\\n        SYNTHESIS[AI Agent: Σύνθεση Ευρημάτων & Συγγραφή Προσχεδίου]\\n        REVIEW_DEC{\\\"Review Partner: Εγκρίνεται το Προσχέδιο;\\\"}\\n        REVISIONS[Agent: Εφαρμογή Διορθώσεων / Re-prompt]\\n        \\n        FINAL_REPORT([Τελικό Financial Due Diligence Report])\\n        \\n        VAL_DCF --> SYNTHESIS\\n        VAL_LIQ --> SYNTHESIS\\n        \\n        %% Non-Sequential Jump (Παράκαμψη)\\n        CRISIS_JUMP -->|Bypass Valuation| SYNTHESIS\\n        \\n        SYNTHESIS --> REVIEW_DEC\\n        REVIEW_DEC -->|ΟΧΙ: Απαιτούνται Αλλαγές| REVISIONS\\n        REVISIONS -->|Επιστροφή για νέα Σύνθεση| SYNTHESIS\\n        \\n        REVIEW_DEC -->|ΝΑΙ: Τελική Έγκριση| FINAL_REPORT\\n    end\\n\\n    %% ΣΤΥΛΙΣΤΙΚΗ ΔΙΑΜΟΡΦΩΣΗ (Χρώματα ανάλογα με τη λειτουργία)\\n    classDef database fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;\\n    classDef process fill:#f5f5f5,stroke:#424242,stroke-width:2px,rx:5,ry:5;\\n    classDef decision fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;\\n    classDef parallel fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,rx:5,ry:5;\\n    classDef alert fill:#ffebee,stroke:#c62828,stroke-width:3px,rx:5,ry:5;\\n    classDef endpoint fill:#f3e5f5,stroke:#6a1b9a,stroke-width:3px,rx:10,ry:10;\\n\\n    class DB1,DB2,API1,DOC1,DATA_READY database;\\n    class ETL,RECON_FIX,AN_FIN,AN_OP,AN_RISK,SYNTHESIS,REVISIONS process;\\n    class RECON_DEC,RED_FLAG_DEC,GOING_CONCERN_DEC,REVIEW_DEC,FORK_1 decision;\\n    class VAL_DCF,VAL_LIQ parallel;\\n    class CRISIS_JUMP alert;\\n    class FINAL_REPORT endpoint;\",\n  \"config\": null,\n  \"version\": \"12\"\n}"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "label": "ΦΑΣΗ 5: Σύνθεση & Review Workflow",
+          "metadata": {
+            "mermaidId": "n:Phase_5",
+            "mermaidBaseStyle": "html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#F0FDF4;strokeColor=#4ADE80;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "ΦΑΣΗ 5: Σύνθεση & Review Workflow"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-3",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "label": "AI Agent: Σύνθεση Ευρημάτων & Συγγραφή Προσχεδίου",
+          "metadata": {
+            "mermaidId": "n:SYNTHESIS",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#424242;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "AI Agent: Σύνθεση Ευρημάτων & Συγγραφή Προσχεδίου"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-4",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "label": "Review Partner: Εγκρίνεται το Προσχέδιο;",
+          "metadata": {
+            "mermaidId": "n:REVIEW_DEC",
+            "mermaidBaseStyle": "rhombus;html=1;strokeWidth=2;whiteSpace=wrap;fillColor=#fff9c4;strokeColor=#fbc02d;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Review Partner: Εγκρίνεται το Προσχέδιο;"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-5",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "label": "Agent: Εφαρμογή Διορθώσεων / Re-prompt",
+          "metadata": {
+            "mermaidId": "n:REVISIONS",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#424242;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Agent: Εφαρμογή Διορθώσεων / Re-prompt"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-6",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "label": "Τελικό Financial Due Diligence Report",
+          "metadata": {
+            "mermaidId": "n:FINAL_REPORT",
+            "mermaidBaseStyle": "html=1;rounded=1;whiteSpace=wrap;arcSize=50;strokeWidth=3;fillColor=#f3e5f5;strokeColor=#6a1b9a;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Τελικό Financial Due Diligence Report"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-7",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-3",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-4",
+          "metadata": {
+            "mermaidId": "e:SYNTHESIS->REVIEW_DEC#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.65;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-8",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-4",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-5",
+          "label": "ΟΧΙ: Απαιτούνται Αλλαγές",
+          "metadata": {
+            "mermaidId": "e:REVIEW_DEC->REVISIONS#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.35;exitY=1;entryX=0.64;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "ΟΧΙ: Απαιτούνται Αλλαγές"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-9",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-5",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-3",
+          "label": "Επιστροφή για νέα Σύνθεση",
+          "metadata": {
+            "mermaidId": "e:REVISIONS->SYNTHESIS#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.36;exitY=0;entryX=0.36;entryY=1;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "Επιστροφή για νέα Σύνθεση"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-10",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-2",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-4",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-6",
+          "label": "ΝΑΙ: Τελική Έγκριση",
+          "metadata": {
+            "mermaidId": "e:REVIEW_DEC->FINAL_REPORT#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.65;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "ΝΑΙ: Τελική Έγκριση"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "label": "ΦΑΣΗ 4: Δέντρο Στρατηγικής Αξιολόγησης",
+          "metadata": {
+            "mermaidId": "n:Phase_4",
+            "mermaidBaseStyle": "html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#ECFEFF;strokeColor=#22D3EE;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "ΦΑΣΗ 4: Δέντρο Στρατηγικής Αξιολόγησης"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-12",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "label": "Εντοπίστηκε Κρίσιμος Κίνδυνος / Απάτη;",
+          "metadata": {
+            "mermaidId": "n:RED_FLAG_DEC",
+            "mermaidBaseStyle": "rhombus;html=1;strokeWidth=2;whiteSpace=wrap;fillColor=#fff9c4;strokeColor=#fbc02d;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Εντοπίστηκε Κρίσιμος Κίνδυνος / Απάτη;"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-13",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "label": "Βιωσιμότητα: Είναι η εταιρεία Going Concern;",
+          "metadata": {
+            "mermaidId": "n:GOING_CONCERN_DEC",
+            "mermaidBaseStyle": "rhombus;html=1;strokeWidth=2;whiteSpace=wrap;fillColor=#fff9c4;strokeColor=#fbc02d;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Βιωσιμότητα: Είναι η εταιρεία Going Concern;"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-14",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "label": "Αποτίμηση DCF: Προεξόφληση Μελλοντικών Ταμειακών Ροών",
+          "metadata": {
+            "mermaidId": "n:VAL_DCF",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Αποτίμηση DCF: Προεξόφληση Μελλοντικών Ταμειακών Ροών"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-15",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "label": "Αποτίμηση Liquidation: Εκποίηση Περιουσιακών Στοιχείων",
+          "metadata": {
+            "mermaidId": "n:VAL_LIQ",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Αποτίμηση Liquidation: Εκποίηση Περιουσιακών Στοιχείων"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-16",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "label": "Άμεση Διακοπή Ανάλυσης: Σήμανση Red Flag",
+          "metadata": {
+            "mermaidId": "n:CRISIS_JUMP",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#ffebee;strokeColor=#c62828;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Άμεση Διακοπή Ανάλυσης: Σήμανση Red Flag"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-17",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-12",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-16",
+          "label": "ΝΑΙ: Κρίσιμο Εύρημα",
+          "metadata": {
+            "mermaidId": "e:RED_FLAG_DEC->CRISIS_JUMP#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.65;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "ΝΑΙ: Κρίσιμο Εύρημα"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-18",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-12",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-13",
+          "label": "ΟΧΙ: Καθαρό",
+          "metadata": {
+            "mermaidId": "e:RED_FLAG_DEC->GOING_CONCERN_DEC#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.35;exitY=1;entryX=0.72;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "ΟΧΙ: Καθαρό"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-19",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-13",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-14",
+          "label": "ΝΑΙ: Υγιής / Αναστρέψιμη",
+          "metadata": {
+            "mermaidId": "e:GOING_CONCERN_DEC->VAL_DCF#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.35;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "ΝΑΙ: Υγιής / Αναστρέψιμη"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-20",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-11",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-13",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-15",
+          "label": "ΟΧΙ: Τεχνική Πτώχευση",
+          "metadata": {
+            "mermaidId": "e:GOING_CONCERN_DEC->VAL_LIQ#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.65;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "ΟΧΙ: Τεχνική Πτώχευση"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-21",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "label": "ΦΑΣΗ 3: Παράλληλη Οικονομική Ανάλυση",
+          "metadata": {
+            "mermaidId": "n:Phase_3",
+            "mermaidBaseStyle": "html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#FFF7ED;strokeColor=#FB923C;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "ΦΑΣΗ 3: Παράλληλη Οικονομική Ανάλυση"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-22",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-21",
+          "label": "Διακλάδωση",
+          "metadata": {
+            "mermaidId": "n:FORK_1",
+            "mermaidBaseStyle": "ellipse;html=1;aspect=fixed;strokeWidth=2;whiteSpace=wrap;fillColor=#fff9c4;strokeColor=#fbc02d;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Διακλάδωση"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-23",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-21",
+          "label": "Financial Analysis: Δείκτες, Ρευστότητα, Κεφάλαιο Κίνησης",
+          "metadata": {
+            "mermaidId": "n:AN_FIN",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#424242;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Financial Analysis: Δείκτες, Ρευστότητα, Κεφάλαιο Κίνησης"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-24",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-21",
+          "label": "Operational Analysis: Περιθώρια Ανά Πελάτη, CRM Churn",
+          "metadata": {
+            "mermaidId": "n:AN_OP",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#424242;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Operational Analysis: Περιθώρια Ανά Πελάτη, CRM Churn"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-25",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-21",
+          "label": "Compliance & Risk: Έλεγχος Συμβάσεων & Επισφαλειών",
+          "metadata": {
+            "mermaidId": "n:AN_RISK",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#424242;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Compliance & Risk: Έλεγχος Συμβάσεων & Επισφαλειών"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-26",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-21",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-22",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-23",
+          "metadata": {
+            "mermaidId": "e:FORK_1->AN_FIN#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.28;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-27",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-21",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-22",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-24",
+          "metadata": {
+            "mermaidId": "e:FORK_1->AN_OP#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-28",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-21",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-22",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-25",
+          "metadata": {
+            "mermaidId": "e:FORK_1->AN_RISK#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.72;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-29",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "label": "ΦΑΣΗ 2: Διασταύρωση & Συμφωνία Δεδομένων",
+          "metadata": {
+            "mermaidId": "n:Phase_2",
+            "mermaidBaseStyle": "html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#F0FDFA;strokeColor=#2DD4BF;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "ΦΑΣΗ 2: Διασταύρωση & Συμφωνία Δεδομένων"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-30",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-29",
+          "label": "Είναι τα δεδομένα Συμφωνημένα; (Reconciliation Check)",
+          "metadata": {
+            "mermaidId": "n:RECON_DEC",
+            "mermaidBaseStyle": "rhombus;html=1;strokeWidth=2;whiteSpace=wrap;fillColor=#fff9c4;strokeColor=#fbc02d;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Είναι τα δεδομένα Συμφωνημένα; (Reconciliation Check)"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-31",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-29",
+          "label": "Manual Adjustments: Επικοινωνία με Πελάτη για διορθώσεις",
+          "metadata": {
+            "mermaidId": "n:RECON_FIX",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#424242;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Manual Adjustments: Επικοινωνία με Πελάτη για διορθώσεις"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-32",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-29",
+          "label": "Εγκεκριμένο Data Lake για Ανάλυση",
+          "metadata": {
+            "mermaidId": "n:DATA_READY",
+            "mermaidBaseStyle": "html=1;rounded=1;whiteSpace=wrap;arcSize=50;strokeWidth=2;fillColor=#e1f5fe;strokeColor=#0277bd;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Εγκεκριμένο Data Lake για Ανάλυση"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-33",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-29",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-30",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-31",
+          "label": "ΟΧΙ: Ασυμφωνία",
+          "metadata": {
+            "mermaidId": "e:RECON_DEC->RECON_FIX#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.35;exitY=1;entryX=0.64;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "ΟΧΙ: Ασυμφωνία"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-34",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-29",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-30",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-32",
+          "label": "ΝΑΙ: 100% Match",
+          "metadata": {
+            "mermaidId": "e:RECON_DEC->DATA_READY#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.65;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "ΝΑΙ: 100% Match"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "label": "ΦΑΣΗ 1: Παράλληλη Ανάκτηση Δεδομένων & ETL",
+          "metadata": {
+            "mermaidId": "n:Phase_1",
+            "mermaidBaseStyle": "html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#FDF4FF;strokeColor=#E879F9;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "ΦΑΣΗ 1: Παράλληλη Ανάκτηση Δεδομένων & ETL"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-36",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "label": "ERP System: SAP/Oracle",
+          "metadata": {
+            "mermaidId": "n:DB1",
+            "mermaidBaseStyle": "html=1;shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=2;whiteSpace=wrap;fillColor=#e1f5fe;strokeColor=#0277bd;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "ERP System: SAP/Oracle"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-37",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "label": "CRM System: Salesforce",
+          "metadata": {
+            "mermaidId": "n:DB2",
+            "mermaidBaseStyle": "html=1;shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=2;whiteSpace=wrap;fillColor=#e1f5fe;strokeColor=#0277bd;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "CRM System: Salesforce"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-38",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "label": "Bank API: Ταμειακές Ροές",
+          "metadata": {
+            "mermaidId": "n:API1",
+            "mermaidBaseStyle": "html=1;shape=parallelogram;perimeter=parallelogramPerimeter;fixedSize=1;size=28.75;strokeWidth=2;whiteSpace=wrap;fillColor=#e1f5fe;strokeColor=#0277bd;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Bank API: Ταμειακές Ροές"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-39",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "label": "PDFs: Ισολογισμοί & Συμβάσεις",
+          "metadata": {
+            "mermaidId": "n:DOC1",
+            "mermaidBaseStyle": "html=1;shape=parallelogram;perimeter=parallelogramPerimeter;fixedSize=1;size=28.75;strokeWidth=2;whiteSpace=wrap;fillColor=#e1f5fe;strokeColor=#0277bd;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "PDFs: Ισολογισμοί & Συμβάσεις"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-40",
+          "type": "node",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "label": "Μηχανισμός ETL & AI Data Extraction: Ενοποίηση Δεδομένων",
+          "metadata": {
+            "mermaidId": "n:ETL",
+            "mermaidBaseStyle": "html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#424242;fontColor=#28253D;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;",
+            "mermaidBaseValue": "Μηχανισμός ETL & AI Data Extraction: Ενοποίηση Δεδομένων"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-41",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-36",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-40",
+          "metadata": {
+            "mermaidId": "e:DB1->ETL#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.58;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-42",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-37",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-40",
+          "metadata": {
+            "mermaidId": "e:DB2->ETL#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.75;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-43",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-38",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-40",
+          "metadata": {
+            "mermaidId": "e:API1->ETL#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=0.99;entryX=0.41;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-44",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-35",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-39",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-40",
+          "metadata": {
+            "mermaidId": "e:DOC1->ETL#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=0.99;entryX=0.24;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-45",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-40",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-30",
+          "metadata": {
+            "mermaidId": "e:ETL->RECON_DEC#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.64;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-46",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-31",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-40",
+          "label": "Επανατροφοδότηση Δεδομένων",
+          "metadata": {
+            "mermaidId": "e:RECON_FIX->ETL#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.36;exitY=0;entryX=0.35;entryY=1;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "Επανατροφοδότηση Δεδομένων"
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-47",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-32",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-22",
+          "metadata": {
+            "mermaidId": "e:DATA_READY->FORK_1#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=0.99;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-48",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-25",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-12",
+          "metadata": {
+            "mermaidId": "e:AN_RISK->RED_FLAG_DEC#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=0.99;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-49",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-23",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-13",
+          "metadata": {
+            "mermaidId": "e:AN_FIN->GOING_CONCERN_DEC#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=0.99;entryX=0.28;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-50",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-24",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-13",
+          "metadata": {
+            "mermaidId": "e:AN_OP->GOING_CONCERN_DEC#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-51",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-14",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-3",
+          "metadata": {
+            "mermaidId": "e:VAL_DCF->SYNTHESIS#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=0.99;entryX=0.29;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-52",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-15",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-3",
+          "metadata": {
+            "mermaidId": "e:VAL_LIQ->SYNTHESIS#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": ""
+          }
+        },
+        {
+          "id": "WFXxXRTzvKHO8Ez9Bymr-53",
+          "type": "edge",
+          "parent": "WFXxXRTzvKHO8Ez9Bymr-1",
+          "source": "WFXxXRTzvKHO8Ez9Bymr-16",
+          "target": "WFXxXRTzvKHO8Ez9Bymr-3",
+          "label": "Bypass Valuation",
+          "metadata": {
+            "mermaidId": "e:CRISIS_JUMP->SYNTHESIS#0",
+            "mermaidBaseStyle": "edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.5;exitY=0.99;entryX=0.72;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;",
+            "mermaidBaseValue": "Bypass Valuation"
+          }
+        }
+      ]
+    }
+  ]
+}
