@@ -29,8 +29,9 @@
 | `/due-diligence [εταιρεία]` | Stress test ισολογισμού: απαντά στις 23 κρίσιμες ερωτήσεις Due Diligence, με βαθμίδα κινδύνου, 3 τελικούς δείκτες και λίστα αιτημάτων προς τη διοίκηση. Βασίζεται στα 3 PDF και στα αποτελέσματα των προηγούμενων skills. | `.claude/skills/due-diligence/SKILL.md` |
 | `/sw-analysis [εταιρεία]` | Δυνάμεις & Αδυναμίες κατά Kotler: 25 κριτήρια με βαθμολογία 1–5 και σημαντικότητα, καθώς και στρατηγική σύνθεση. Βασίζεται στα προηγούμενα αποτελέσματα, στα PDF όπου χρειάζεται και σε έρευνα στο διαδίκτυο για τα κενά. | `.claude/skills/sw-analysis/SKILL.md` |
 | `/business-diagnostic [εταιρεία]` | Συνοπτικές, τεκμηριωμένες απαντήσεις στις 14 διαγνωστικές ερωτήσεις (κλάδος, μέγεθος, πελάτες, διαδικασίες, marketing, KPIs, κερδοφορία). Βασίζεται στα προηγούμενα αποτελέσματα και σε έρευνα στο διαδίκτυο για τα κενά. | `.claude/skills/business-diagnostic/SKILL.md` |
+| `/profit-improvement [εταιρεία]` | Σχέδιο βελτίωσης κερδοφορίας (~5000 λέξεις) για CEO και CFO. Καλύπτει πού χάνονται χρήματα, ευκαιρίες βελτίωσης, 7–8 δράσεις μείωσης κόστους και εκτιμώμενο όφελος με σενάριο επανεπένδυσης. Βασίζεται σε όλα τα προηγούμενα αποτελέσματα. | `.claude/skills/profit-improvement/SKILL.md` |
 
-Ορισμένα skills χρησιμοποιούν ως δεδομένα εισόδου τα αποτελέσματα προηγούμενων skills (σειρά: `/company-profile` → `/pestle` → `/five-forces`, και ξεχωριστά `/financial-analysis`. Το `/due-diligence` χρειάζεται όλα τα προηγούμενα. Το `/sw-analysis` χρειάζεται προφίλ, PESTLE, 5 Forces και οικονομική έκθεση. Το `/business-diagnostic` χρειάζεται επιπλέον και το `/sw-analysis`) ή τα αρχεία PDF του φακέλου. Τι χρησιμοποιεί το καθένα ορίζεται στο SKILL.md του.
+Ορισμένα skills χρησιμοποιούν ως δεδομένα εισόδου τα αποτελέσματα προηγούμενων skills (σειρά: `/company-profile` → `/pestle` → `/five-forces`, και ξεχωριστά `/financial-analysis`. Το `/due-diligence` χρειάζεται όλα τα προηγούμενα. Το `/sw-analysis` χρειάζεται προφίλ, PESTLE, 5 Forces και οικονομική έκθεση. Το `/business-diagnostic` χρειάζεται επιπλέον και το `/sw-analysis`. Το `/profit-improvement` χρειάζεται όλα τα προηγούμενα) ή τα αρχεία PDF του φακέλου. Τι χρησιμοποιεί το καθένα ορίζεται στο SKILL.md του.
 
 Όταν δημιουργείται νέο skill, προστίθεται μία γραμμή σε αυτόν τον πίνακα.
 
@@ -62,7 +63,7 @@
 | `CLAUDE.md` | Αυτό το αρχείο: χρήστης, γενικοί κανόνες, κατάλογος skills. |
 | `MEMORY.md` | Διδάγματα από τις παρατηρήσεις και διορθώσεις μου, χωρισμένα σε γενικά και ανά skill. Διαβάζεται πριν από κάθε εργασία. |
 | `.claude/skills/[όνομα]/SKILL.md` | Η διαδικασία βήμα-βήμα και οι ειδικοί κανόνες κάθε skill. |
-| `reference/` | Οι αρχικές οδηγίες κάθε εργασίας, όπως τις έγραψα (`PROMPT_for_web_scraping.txt` για το `/company-profile`, `PROMPT_for_PESTLE.txt` για το `/pestle`, `PROMPT_for_5-Forces.txt` για το `/five-forces`, `PROMPT_for_Isologismos.txt` για το `/financial-analysis`, `PROMPT_for_23_Questions.txt` για το `/due-diligence`, `PROMPT_for_SW.txt` για το `/sw-analysis`, `PROMPT_for_14_Questions.txt` για το `/business-diagnostic`). Είναι η «πηγή αλήθειας» αν υπάρξει αμφιβολία. |
+| `reference/` | Οι αρχικές οδηγίες κάθε εργασίας, όπως τις έγραψα (`PROMPT_for_web_scraping.txt` για το `/company-profile`, `PROMPT_for_PESTLE.txt` για το `/pestle`, `PROMPT_for_5-Forces.txt` για το `/five-forces`, `PROMPT_for_Isologismos.txt` για το `/financial-analysis`, `PROMPT_for_23_Questions.txt` για το `/due-diligence`, `PROMPT_for_SW.txt` για το `/sw-analysis`, `PROMPT_for_14_Questions.txt` για το `/business-diagnostic`, `PROMPT_for_Proposals.txt` για το `/profit-improvement`). Είναι η «πηγή αλήθειας» αν υπάρξει αμφιβολία. |
 | `examples/` | Παραδείγματα που έχω εγκρίνει ως καλά πρότυπα, με όνομα αρχείου που δείχνει σε ποιο skill αντιστοιχούν. |
 | `outputs/` | Τα κείμενα που παράγεις, με όνομα αρχείου που δείχνει την εταιρεία, την εργασία και την ημερομηνία. |
 
