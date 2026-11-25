@@ -1,0 +1,101 @@
+graph TD
+    %% ΟΡΙΣΜΟΣ ΦΑΣΕΩΝ (SUBGRAPHS)
+    
+    subgraph Phase_1 [ΦΑΣΗ 1: Παράλληλη Ανάκτηση Δεδομένων & ETL]
+        direction TB
+        DB1[(ERP System: SAP/Oracle)]
+        DB2[(CRM System: Salesforce)]
+        API1[/Bank API: Ταμειακές Ροές/]
+        DOC1[/PDFs: Ισολογισμοί & Συμβάσεις/]
+        
+        ETL[Μηχανισμός ETL & AI Data Extraction: Ενοποίηση Δεδομένων]
+        
+        DB1 --> ETL
+        DB2 --> ETL
+        API1 --> ETL
+        DOC1 --> ETL
+    end
+
+    subgraph Phase_2 [ΦΑΣΗ 2: Διασταύρωση & Συμφωνία Δεδομένων]
+        direction TB
+        RECON_DEC{"Είναι τα δεδομένα Συμφωνημένα; (Reconciliation Check)"}
+        RECON_FIX[Manual Adjustments: Επικοινωνία με Πελάτη για διορθώσεις]
+        DATA_READY([Εγκεκριμένο Data Lake για Ανάλυση])
+        
+        ETL --> RECON_DEC
+        RECON_DEC -->|ΟΧΙ: Ασυμφωνία| RECON_FIX
+        RECON_FIX -->|Επανατροφοδότηση Δεδομένων| ETL
+        RECON_DEC -->|ΝΑΙ: 100% Match| DATA_READY
+    end
+
+    subgraph Phase_3 [ΦΑΣΗ 3: Παράλληλη Οικονομική Ανάλυση]
+        direction TB
+        FORK_1((Διακλάδωση))
+        
+        AN_FIN[Financial Analysis: Δείκτες, Ρευστότητα, Κεφάλαιο Κίνησης]
+        AN_OP[Operational Analysis: Περιθώρια Ανά Πελάτη, CRM Churn]
+        AN_RISK[Compliance & Risk: Έλεγχος Συμβάσεων & Επισφαλειών]
+        
+        DATA_READY --> FORK_1
+        FORK_1 --> AN_FIN
+        FORK_1 --> AN_OP
+        FORK_1 --> AN_RISK
+    end
+
+    subgraph Phase_4 [ΦΑΣΗ 4: Δέντρο Στρατηγικής Αξιολόγησης]
+        direction TB
+        RED_FLAG_DEC{"Εντοπίστηκε Κρίσιμος Κίνδυνος / Απάτη;"}
+        
+        GOING_CONCERN_DEC{"Βιωσιμότητα: Είναι η εταιρεία Going Concern;"}
+        
+        VAL_DCF[Αποτίμηση DCF: Προεξόφληση Μελλοντικών Ταμειακών Ροών]
+        VAL_LIQ[Αποτίμηση Liquidation: Εκποίηση Περιουσιακών Στοιχείων]
+        
+        CRISIS_JUMP[Άμεση Διακοπή Ανάλυσης: Σήμανση Red Flag]
+        
+        AN_RISK --> RED_FLAG_DEC
+        AN_FIN --> GOING_CONCERN_DEC
+        AN_OP --> GOING_CONCERN_DEC
+        
+        RED_FLAG_DEC -->|ΝΑΙ: Κρίσιμο Εύρημα| CRISIS_JUMP
+        RED_FLAG_DEC -->|ΟΧΙ: Καθαρό| GOING_CONCERN_DEC
+        
+        GOING_CONCERN_DEC -->|ΝΑΙ: Υγιής / Αναστρέψιμη| VAL_DCF
+        GOING_CONCERN_DEC -->|ΟΧΙ: Τεχνική Πτώχευση| VAL_LIQ
+    end
+
+    subgraph Phase_5 [ΦΑΣΗ 5: Σύνθεση & Review Workflow]
+        direction TB
+        SYNTHESIS[AI Agent: Σύνθεση Ευρημάτων & Συγγραφή Προσχεδίου]
+        REVIEW_DEC{"Review Partner: Εγκρίνεται το Προσχέδιο;"}
+        REVISIONS[Agent: Εφαρμογή Διορθώσεων / Re-prompt]
+        
+        FINAL_REPORT([Τελικό Financial Due Diligence Report])
+        
+        VAL_DCF --> SYNTHESIS
+        VAL_LIQ --> SYNTHESIS
+        
+        %% Non-Sequential Jump (Παράκαμψη)
+        CRISIS_JUMP -->|Bypass Valuation| SYNTHESIS
+        
+        SYNTHESIS --> REVIEW_DEC
+        REVIEW_DEC -->|ΟΧΙ: Απαιτούνται Αλλαγές| REVISIONS
+        REVISIONS -->|Επιστροφή για νέα Σύνθεση| SYNTHESIS
+        
+        REVIEW_DEC -->|ΝΑΙ: Τελική Έγκριση| FINAL_REPORT
+    end
+
+    %% ΣΤΥΛΙΣΤΙΚΗ ΔΙΑΜΟΡΦΩΣΗ (Χρώματα ανάλογα με τη λειτουργία)
+    classDef database fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;
+    classDef process fill:#f5f5f5,stroke:#424242,stroke-width:2px,rx:5,ry:5;
+    classDef decision fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    classDef parallel fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,rx:5,ry:5;
+    classDef alert fill:#ffebee,stroke:#c62828,stroke-width:3px,rx:5,ry:5;
+    classDef endpoint fill:#f3e5f5,stroke:#6a1b9a,stroke-width:3px,rx:10,ry:10;
+
+    class DB1,DB2,API1,DOC1,DATA_READY database;
+    class ETL,RECON_FIX,AN_FIN,AN_OP,AN_RISK,SYNTHESIS,REVISIONS process;
+    class RECON_DEC,RED_FLAG_DEC,GOING_CONCERN_DEC,REVIEW_DEC,FORK_1 decision;
+    class VAL_DCF,VAL_LIQ parallel;
+    class CRISIS_JUMP alert;
+    class FINAL_REPORT endpoint;

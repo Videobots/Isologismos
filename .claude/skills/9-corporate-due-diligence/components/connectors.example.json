@@ -1,0 +1,72 @@
+{
+  "_comment": "PLACEHOLDER. Αντίγραψέ το ως connectors.json ΕΚΤΟΣ repository. Κανένα secret εδώ: τα κλειδιά δίνονται μέσω της ασφαλούς φόρμας διαπιστευτηρίων ή OAuth.",
+  "target_company": "eurosos",
+  "periods": ["2023", "2024"],
+  "connectors": {
+    "erp": {
+      "enabled": false,
+      "type": "mcp",
+      "mcp_server": "mcp-erp",
+      "vendor": "SAP_S4HANA | ORACLE_FUSION",
+      "base_url": "https://<erp-host>/sap/opu/odata4/",
+      "company_code": "<κωδικός εταιρείας>",
+      "auth": "oauth2_client_credentials (secret εκτός repo)",
+      "scope": "read-only",
+      "entities": ["TrialBalance", "JournalEntryItem", "CustomerOpenItems", "SupplierOpenItems", "FixedAsset", "Inventory", "SalesByCustomer"]
+    },
+    "crm": {
+      "enabled": false,
+      "type": "mcp",
+      "mcp_server": "mcp-salesforce",
+      "instance_url": "https://<org>.my.salesforce.com",
+      "api_version": "v60.0",
+      "auth": "oauth2_connected_app (secret εκτός repo)",
+      "scope": "read-only",
+      "objects": ["Account", "Contract", "Opportunity", "Case"]
+    },
+    "bank": {
+      "enabled": false,
+      "type": "rest_api",
+      "standard": "PSD2_AIS / Berlin Group NextGenPSD2",
+      "provider": "<αδειοδοτημένος AISP>",
+      "base_url": "https://<aisp-host>/v1/",
+      "consent_id": "<από συναίνεση εταιρείας-στόχου>",
+      "scope": "accounts, balances, transactions (read-only)"
+    },
+    "pdf": {
+      "enabled": true,
+      "type": "local_files",
+      "path": "./",
+      "files": {
+        "balance_sheet": "EUROSOS ΙΣΟΛΟΓΙΣΜΟΣ ΔΕΙΓΜΑ 2.pdf",
+        "general_ledger": "EUROSOS ΓΕΝΙΚΟ ΚΑΘΟΛΙΚΟ.pdf",
+        "sub_ledger": "EUROSOS ΑΝΑΛΥΤΙΚΟ ΚΑΘΟΛΙΚΟ.pdf"
+      }
+    },
+    "data_room": {
+      "enabled": false,
+      "type": "local_files | google_drive",
+      "path": "data-room/<εταιρεία>/contracts/",
+      "drive_folder": "Isologismos/data-room/<εταιρεία>/"
+    },
+    "drive": {
+      "enabled": true,
+      "type": "connector",
+      "folder_id": "1ddMbjk5yAZH70nFBUuZyMqUAvoD5MEmQ",
+      "permissions": "create-only (καμία διαγραφή/αντικατάσταση χωρίς έγκριση)"
+    },
+    "gmail": {
+      "enabled": true,
+      "type": "connector",
+      "permissions": "create_draft only (ποτέ αποστολή χωρίς έγκριση)"
+    },
+    "github": {
+      "enabled": true,
+      "type": "git",
+      "repo": "videobots/isologismos",
+      "write_scope": "outputs/"
+    }
+  },
+  "loops": { "recon_max": 3, "review_max": 3 },
+  "review_partner": "Δημήτρης"
+}
