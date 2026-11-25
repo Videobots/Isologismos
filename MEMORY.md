@@ -4,26 +4,26 @@
 
 ## Γενικά (για όλα τα skills)
 
-## /company-profile
+## /1-company-profile
 
 
-## /pestle
+## /2-pestle
 
 
-## /five-forces
+## /3-five-forces
 
 
-## /financial-analysis
+## /4-financial-analysis
 
 
-## /due-diligence
+## /5-due-diligence
 
 
-## /sw-analysis
+## /6-sw-analysis
 
 
-## /business-diagnostic
+## /7-business-diagnostic
 
 
-## /profit-improvement
+## /8-profit-improvement
 
