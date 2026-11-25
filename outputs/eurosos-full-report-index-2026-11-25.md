@@ -4,14 +4,14 @@
 
 | # | Ανάλυση | Αρχείο | Google Doc | Λέξεις |
 |---|---|---|---|---|
-| 1 | Προφίλ Εταιρείας | [eurosos-profil-2026-11-25.md](eurosos-profil-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/11dRaPRDkUJ0o-tDfg_GpIGBcwqlWppBHbooW7yGm8Bw/edit) | 1.231 |
-| 2 | Ανάλυση PESTLE | [eurosos-pestle-2026-11-25.md](eurosos-pestle-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1oVDjzh8SM-8zC4FJ1QFKfaxCt-clYn_urCYrwlBgG4c/edit) | 2.190 |
-| 3 | 5 Δυνάμεις Porter | [eurosos-5forces-2026-11-25.md](eurosos-5forces-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/12IXZzUwBEQ2OkpK9bLZ5tzuQm2vrYAX1rcwGhmMBmSg/edit) | 3.565 |
-| 4 | Οικονομική Έκθεση 2024 | [eurosos-financial-2024-2026-11-25.md](eurosos-financial-2024-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1oIwkQJ99a7nJHxMT6TwUPmqJhoEC_f91tuuYUVTuK7A/edit) | 1.379 |
-| 5 | Due Diligence — 23 ερωτήσεις | [eurosos-due-diligence-2024-2026-11-25.md](eurosos-due-diligence-2024-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1CDzi2uwq7s8DQzdXgZ1kAsNvdKSM7BVpLGWSz8pLH5Y/edit) | 3.523 |
-| 6 | Δυνάμεις & Αδυναμίες (Kotler) | [eurosos-sw-2026-11-25.md](eurosos-sw-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1g6wdToV4l2zczpldsm6BqTcjZg9DAf1qzJLgT_tnQxs/edit) | 3.017 |
-| 7 | 14 Διαγνωστικές Ερωτήσεις | [eurosos-diagnostic-2026-11-25.md](eurosos-diagnostic-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1HwZomzJsvXOWFIl6KZg3haqnIxjnjmU0qIgCra6XQjE/edit) | 1.419 |
-| 8 | Σχέδιο Βελτίωσης Κερδοφορίας | [eurosos-profit-improvement-2026-11-25.md](eurosos-profit-improvement-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1c6Z28UL0Jhx6ZykilBVsRT2BcgmBq5MAiICDFq4nlNA/edit) | 4.760 |
+| 1 | Προφίλ Εταιρείας | [eurosos-profil-2026-11-25.md](https://github.com/Videobots/Isologismos/blob/main/outputs/eurosos-profil-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/11dRaPRDkUJ0o-tDfg_GpIGBcwqlWppBHbooW7yGm8Bw/edit) | 1.231 |
+| 2 | Ανάλυση PESTLE | [eurosos-pestle-2026-11-25.md](https://github.com/Videobots/Isologismos/blob/main/outputs/eurosos-pestle-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1oVDjzh8SM-8zC4FJ1QFKfaxCt-clYn_urCYrwlBgG4c/edit) | 2.190 |
+| 3 | 5 Δυνάμεις Porter | [eurosos-5forces-2026-11-25.md](https://github.com/Videobots/Isologismos/blob/main/outputs/eurosos-5forces-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/12IXZzUwBEQ2OkpK9bLZ5tzuQm2vrYAX1rcwGhmMBmSg/edit) | 3.565 |
+| 4 | Οικονομική Έκθεση 2024 | [eurosos-financial-2024-2026-11-25.md](https://github.com/Videobots/Isologismos/blob/main/outputs/eurosos-financial-2024-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1oIwkQJ99a7nJHxMT6TwUPmqJhoEC_f91tuuYUVTuK7A/edit) | 1.379 |
+| 5 | Due Diligence — 23 ερωτήσεις | [eurosos-due-diligence-2024-2026-11-25.md](https://github.com/Videobots/Isologismos/blob/main/outputs/eurosos-due-diligence-2024-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1CDzi2uwq7s8DQzdXgZ1kAsNvdKSM7BVpLGWSz8pLH5Y/edit) | 3.523 |
+| 6 | Δυνάμεις & Αδυναμίες (Kotler) | [eurosos-sw-2026-11-25.md](https://github.com/Videobots/Isologismos/blob/main/outputs/eurosos-sw-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1g6wdToV4l2zczpldsm6BqTcjZg9DAf1qzJLgT_tnQxs/edit) | 3.017 |
+| 7 | 14 Διαγνωστικές Ερωτήσεις | [eurosos-diagnostic-2026-11-25.md](https://github.com/Videobots/Isologismos/blob/main/outputs/eurosos-diagnostic-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1HwZomzJsvXOWFIl6KZg3haqnIxjnjmU0qIgCra6XQjE/edit) | 1.419 |
+| 8 | Σχέδιο Βελτίωσης Κερδοφορίας | [eurosos-profit-improvement-2026-11-25.md](https://github.com/Videobots/Isologismos/blob/main/outputs/eurosos-profit-improvement-2026-11-25.md) | [Άνοιγμα](https://docs.google.com/document/d/1c6Z28UL0Jhx6ZykilBVsRT2BcgmBq5MAiICDFq4nlNA/edit) | 4.760 |
 | | **Σύνολο** | | | **21.084** |
 
 ## Σύνοψη του φακέλου
