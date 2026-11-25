@@ -21,3 +21,6 @@
 
 ## /sw-analysis
 
+
+## /business-diagnostic
+
