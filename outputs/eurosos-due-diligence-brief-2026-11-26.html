@@ -1,0 +1,430 @@
+<title>EUROSOS Stress Test 2024</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: two A4 sheets on a tinted desk. Sheet 1 = verdict, indicators, charts. Sheet 2 = 23-question risk grid, requests, conclusion. */
+:root {
+  --desk: #e6eaee;
+  --paper: #ffffff;
+  --ink: #16212b;
+  --ink-2: #4a5866;
+  --line: #d5dce3;
+  --tint: #f1f4f7;
+  --brand: #0f4c5c;
+  --brand-ink: #ffffff;
+  --brand-soft: #dcebee;
+  --red: #c0392b;   --red-soft: #f8e1de;
+  --amber: #c98a06; --amber-soft: #fbefd2;
+  --green: #2e8b57; --green-soft: #dcf0e3;
+  --grey: #8a96a3;  --grey-soft: #e9edf1;
+  --font: "Commissioner", "Inter", "DejaVu Sans", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --desk: #0d1318; --paper: #151d24; --ink: #e5ebf0; --ink-2: #9fadba; --line: #2a3640; --tint: #1b252e;
+  --brand: #4fa3b5; --brand-ink: #0b1a1f; --brand-soft: #1b343b;
+  --red: #ef7a6c; --red-soft: #3a211f; --amber: #e8b54a; --amber-soft: #382c14; --green: #5cc58a; --green-soft: #183126; --grey: #8d9aa7; --grey-soft: #222c35;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --desk: #0d1318; --paper: #151d24; --ink: #e5ebf0; --ink-2: #9fadba; --line: #2a3640; --tint: #1b252e;
+  --brand: #4fa3b5; --brand-ink: #0b1a1f; --brand-soft: #1b343b;
+  --red: #ef7a6c; --red-soft: #3a211f; --amber: #e8b54a; --amber-soft: #382c14; --green: #5cc58a; --green-soft: #183126; --grey: #8d9aa7; --grey-soft: #222c35;
+  color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--desk); color: var(--ink); font-family: var(--font); font-size: 8.4pt; line-height: 1.38;
+  padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  font-variant-numeric: tabular-nums; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sheet { background: var(--paper); width: min(210mm, 100%); margin: 0 auto 24px; padding: 9mm 12mm 7mm; box-shadow: 0 1px 3px rgb(0 0 0 / .08), 0 8px 24px rgb(0 0 0 / .06);
+  display: flex; flex-direction: column; gap: 9px; }
+@media (min-width: 820px) { .sheet { height: 297mm; } }
+@media (max-width: 600px) { .sheet { padding: 18px 16px; } body { font-size: 10pt; } }
+
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.eyebrow { font-size: 7pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--brand); }
+h2 { font-size: 10.5pt; font-weight: 700; display: flex; align-items: baseline; gap: 8px; }
+h2 .tag { font-size: 7pt; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+
+/* Masthead */
+.mast { background: var(--brand); color: var(--brand-ink); padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: end; }
+.mast .eyebrow { color: inherit; opacity: .8; }
+.mast h1 { font-size: 18pt; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
+.mast .meta { text-align: right; font-size: 7.6pt; opacity: .9; line-height: 1.45; }
+.mast .meta b { font-size: 9pt; display: block; }
+@media (max-width: 600px) { .mast { grid-template-columns: 1fr; } .mast .meta { text-align: left; } .mast h1 { font-size: 15pt; } }
+
+.basis { font-size: 7.3pt; color: var(--ink-2); border-left: 2px solid var(--line); padding-left: 8px; }
+.basis b { color: var(--ink); font-weight: 600; }
+
+.verdict { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
+.verdict > div { padding: 9px 12px; display: flex; flex-direction: column; gap: 2px; }
+.verdict .ok { background: var(--green-soft); }
+.verdict .bad { background: var(--red-soft); }
+.verdict .lbl { font-size: 7pt; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.verdict .ok .lbl { color: var(--green); } .verdict .bad .lbl { color: var(--red); }
+.verdict .big { font-size: 11.5pt; font-weight: 700; line-height: 1.2; }
+.verdict small { font-size: 7.6pt; color: var(--ink-2); }
+@media (max-width: 600px) { .verdict { grid-template-columns: 1fr; } }
+
+/* KPI trio */
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.kpi { border: 1px solid var(--line); padding: 9px 10px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.kpi .q { font-size: 7pt; color: var(--ink-2); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.kpi .v { font-size: 21pt; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+.kpi .v.red { color: var(--red); } .kpi .v.amber { color: var(--amber); } .kpi .v.green { color: var(--green); }
+.kpi .v small { font-size: 9pt; font-weight: 600; color: var(--ink-2); letter-spacing: 0; }
+.kpi p { font-size: 7.5pt; color: var(--ink-2); }
+.kpi p b { color: var(--ink); }
+.scale { position: relative; height: 22px; margin-top: 2px; }
+.scale .track { position: absolute; left: 0; right: 0; top: 6px; height: 6px; background: var(--grey-soft); }
+.scale .band { position: absolute; top: 6px; height: 6px; background: var(--amber-soft); border: 1px solid var(--amber); }
+.scale .mark { position: absolute; top: 2px; width: 2px; height: 14px; background: var(--ink); }
+.scale .mark.red { background: var(--red); }
+.scale .ref { position: absolute; top: 0; width: 0; height: 18px; border-left: 1px dashed var(--ink-2); }
+.scale .t { position: absolute; top: 15px; font-size: 6.4pt; color: var(--ink-2); transform: translateX(-50%); white-space: nowrap; }
+@media (max-width: 600px) { .kpis { grid-template-columns: 1fr; } }
+
+/* two-column body */
+.cols { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 12px; }
+.col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+@media (min-width: 820px), print { .sheet > .cols { flex: 1; gap: 16px; } .sheet > .cols .col { gap: 12px; } .sheet > .cols .mix, .sheet > .cols .facts { margin-top: auto; } .top5 { gap: 9px; } }
+@media (max-width: 600px) { .cols { grid-template-columns: 1fr; } }
+
+.top5 { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; counter-reset: r; }
+.top5 li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; counter-increment: r; }
+.top5 li::before { content: counter(r); width: 22px; height: 22px; display: grid; place-items: center; background: var(--red); color: var(--paper); font-weight: 700; font-size: 8pt; }
+.top5 b { display: block; font-size: 8.6pt; }
+.top5 span { color: var(--ink-2); font-size: 7.6pt; }
+
+.mix { display: flex; flex-direction: column; gap: 5px; }
+.mixbar { display: flex; height: 18px; }
+.mixbar div { display: grid; place-items: center; font-size: 7.4pt; font-weight: 700; color: var(--paper); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 7.2pt; color: var(--ink-2); }
+.legend i { display: inline-block; width: 8px; height: 8px; margin-right: 4px; vertical-align: 0; }
+
+.fig { border: 1px solid var(--line); padding: 8px 10px 6px; display: flex; flex-direction: column; gap: 4px; }
+.fig h3 { font-size: 8.4pt; font-weight: 700; }
+.fig .cap { font-size: 7pt; color: var(--ink-2); }
+.fig svg { width: 100%; height: auto; display: block; }
+svg text { font-family: var(--font); }
+
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0; border-top: 1px solid var(--line); }
+.facts div { padding: 5px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 8px; font-size: 7.6pt; }
+.facts div:nth-child(odd) { padding-right: 10px; }
+.facts div:nth-child(even) { padding-left: 10px; border-left: 1px solid var(--line); }
+.facts span { color: var(--ink-2); }
+.facts b { white-space: nowrap; }
+
+.foot { margin-top: auto; display: flex; justify-content: space-between; gap: 12px; font-size: 6.6pt; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 5px; }
+
+/* Sheet 2: risk grid */
+.grid23 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; }
+.grid23 > .col { gap: 6px; }
+.sec { display: flex; flex-direction: column; min-width: 0; }
+.sec h3 { font-size: 7.4pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); padding-bottom: 3px; border-bottom: 1.5px solid var(--brand); }
+.row { display: grid; grid-template-columns: 18px 10px minmax(0, 1fr); gap: 0 6px; padding: 2.2px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.row .n { font-weight: 700; font-size: 7.6pt; color: var(--ink-2); text-align: right; }
+.row .dot { width: 9px; height: 9px; border-radius: 50%; margin-top: 2px; }
+.dot.r { background: var(--red); } .dot.y { background: var(--amber); } .dot.g { background: var(--green); } .dot.w { background: var(--paper); border: 1.5px solid var(--grey); }
+.row .t { font-size: 7.9pt; font-weight: 600; }
+.row .t em { font-style: normal; font-weight: 500; font-size: 6.6pt; color: var(--ink-2); margin-left: 4px; letter-spacing: .02em; }
+.row .f { grid-column: 3; font-size: 7.1pt; line-height: 1.3; color: var(--ink-2); }
+@media (max-width: 600px) { .grid23 { grid-template-columns: 1fr; } }
+
+.reqs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.req { border-top: 3px solid var(--line); padding-top: 5px; min-width: 0; }
+.req.p1 { border-color: var(--red); } .req.p2 { border-color: var(--amber); } .req.p3 { border-color: var(--grey); }
+.req h3 { font-size: 7.6pt; font-weight: 700; margin-bottom: 3px; }
+.req h3 span { font-weight: 500; color: var(--ink-2); }
+.req ol { margin: 0; padding-left: 15px; font-size: 7pt; line-height: 1.3; display: flex; flex-direction: column; gap: 1px; }
+.req ol li::marker { color: var(--ink-2); font-weight: 600; }
+.req .ref { color: var(--ink-2); }
+@media (max-width: 600px) { .reqs { grid-template-columns: 1fr; } }
+
+.concl { background: var(--tint); padding: 8px 12px; display: flex; flex-direction: column; gap: 5px; }
+.abc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.abc div { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.abc .k { font-size: 7pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.abc .a { font-size: 9.2pt; font-weight: 700; }
+.abc .a.r { color: var(--red); } .abc .a.y { color: var(--amber); }
+.abc p { font-size: 7.4pt; color: var(--ink-2); }
+.confirm { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; border-top: 1px solid var(--line); padding-top: 7px; font-size: 7.5pt; }
+.confirm ul { margin: 0; padding-left: 14px; display: flex; flex-direction: column; gap: 1px; }
+.bottom { font-size: 10pt; font-weight: 700; color: var(--brand); border-top: 1px solid var(--line); padding-top: 7px; }
+@media (max-width: 600px) { .abc, .confirm { grid-template-columns: 1fr; } }
+
+@media print {
+  @page { size: A4; margin: 0; }
+  body { background: var(--paper); padding: 0; }
+  .sheet { width: 210mm; height: 297mm; margin: 0; box-shadow: none; overflow: hidden; break-after: page; }
+  .sheet:last-child { break-after: auto; }
+}
+</style>
+
+<!-- ============ SHEET 1 ============ -->
+<section class="sheet" aria-label="Σελίδα 1">
+  <header class="mast">
+    <div>
+      <div class="eyebrow">Due Diligence · Stress test ισολογισμού · 23 κρίσιμες ερωτήσεις</div>
+      <h1>EUROSOS Α.Ε. Υπηρεσιών Βοήθειας &amp; Πληροφοριών</h1>
+    </div>
+    <div class="meta"><b>Χρήση 2024</b>ΧΚ 31/12/2024 · ΔΠΧΑ<br>Έκθεση 25/11/2026</div>
+  </header>
+
+  <p class="basis"><b>Βάση:</b> Οικονομικές Καταστάσεις 31/12/2024 κατά ΔΠΧΑ, με γνώμη ορκωτού <b>χωρίς επιφύλαξη</b> και επισήμανση για τα ίδια κεφάλαια (άρθρο 119 Ν. 4548/2018). Γενικό και Αναλυτικό Καθολικό χαρακτηρίζονται «υποθετικά» και χρησιμοποιούνται μόνο ενδεικτικά. Όπου διαφωνούν, υπερισχύουν οι ΧΚ.</p>
+
+  <div class="verdict">
+    <div class="ok"><span class="lbl">Δεν υπάρχει</span><span class="big">Πρόβλημα χρέους</span><small>Μηδενικός τραπεζικός και ενδοομιλικός δανεισμός · καθαρά ταμειακά 1,66 εκατ. € μετά τις μισθώσεις</small></div>
+    <div class="bad"><span class="lbl">Υπάρχει</span><span class="big">Πρόβλημα αυτοχρηματοδότησης και κεφαλαιακής βάσης</span><small>Ζημία 1,37 εκατ. € · FCF ‑949 χιλ. € · ίδια κεφάλαια κάτω από το ½ του μετοχικού</small></div>
+  </div>
+
+  <div>
+    <h2>Οι τρεις αδιαπραγμάτευτοι δείκτες <span class="tag">Ερ. 21–23</span></h2>
+  </div>
+  <div class="kpis">
+    <div class="kpi">
+      <span class="q">Προσαρμοσμένη γενική ρευστότητα</span>
+      <span class="v red">0,26 <small>απλή 0,42</small></span>
+      <div class="scale" aria-hidden="true">
+        <div class="track"></div>
+        <div class="band" style="left:13%; width:44.5%"></div>
+        <div class="ref" style="left:50%"></div>
+        <div class="mark red" style="left:13%"></div>
+        <div class="mark" style="left:57.5%"></div>
+        <span class="t" style="left:13%">0,26</span>
+        <span class="t" style="left:50%">1,0</span>
+        <span class="t" style="left:57.5%; transform:translateX(-10%)">1,15</span>
+      </div>
+      <p>Για κάθε 1 € άμεσης υποχρέωσης, 26 λεπτά «καθαρής» ρευστότητας (2023: 0,58). Χωρίς τα μη δεδουλευμένα έσοδα των 5,98 εκατ. €, που εξοφλούνται με υπηρεσία: <b>1,15</b>.</p>
+    </div>
+    <div class="kpi">
+      <span class="q">Καθαρό χρέος / EBITDA</span>
+      <span class="v amber">n/m <small>μη ερμηνεύσιμος</small></span>
+      <p>Καθαρό χρέος <b>‑1,66 εκατ. €</b> (καθαρά ταμειακά) και EBITDA <b>‑171 χιλ. €</b>: και οι δύο όροι αρνητικοί. Χωρίς ΔΠΧΑ 16, EBITDA ≈ ‑439 χιλ. €.</p>
+      <p>Τα ταμειακά δεν απειλούνται από χρέος, αλλά από τη λειτουργική «καύση».</p>
+    </div>
+    <div class="kpi">
+      <span class="q">Κύκλος μετατροπής μετρητών</span>
+      <span class="v green">‑8,9 <small>ημέρες</small></span>
+      <p>Είσπραξη <b>35,2</b> ημ. − πληρωμή <b>44,1</b> ημ. (αποθέματα 0). Εισπράττει πριν πληρώσει: το ισχυρότερο δομικό χαρακτηριστικό.</p>
+      <p>Το 2023 ήταν ‑36,5: το πλεονέκτημα συρρικνώθηκε κατά 27,5 ημέρες.</p>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h2>Οι πέντε σοβαρότεροι κίνδυνοι</h2>
+      <ol class="top5">
+        <li><div><b>Ενσώματη καθαρή θέση ‑2,96 εκατ. €</b><span>Τα ίδια κεφάλαια των 301 χιλ. € στηρίζονται εξ ολοκλήρου σε άυλα 3,26 εκατ. € (39,9% του ενεργητικού), χωρίς έλεγχο απομείωσης.</span></div></li>
+        <li><div><b>Αρνητικές ελεύθερες ταμειακές ροές ‑949 χιλ. €</b><span>Χωρίς την αύξηση των προεισπραγμένων συνδρομών (+1,61 εκατ. €), οι λειτουργικές ροές θα ήταν ‑1,07 εκατ. €.</span></div></li>
+        <li><div><b>Η ERGO = 49,4% του τζίρου</b><span>Μοναδική μέτοχος, πρώην δανειστής και εγγυητής της συνέχισης της δραστηριότητας ταυτόχρονα.</span></div></li>
+        <li><div><b>Εκτιμώμενα υπόλοιπα στο κυκλοφορούν</b><span>Δουλευμένα έσοδα 1,13 εκατ. €, βασισμένα σε εκτίμηση κατά τη μετάπτωση σε SAP / Salesforce.</span></div></li>
+        <li><div><b>Ίδια κεφάλαια κάτω από το ½ του μετοχικού</b><span>Εσωτερική αντίφαση στη Σημ. 2.3.1 για τη σχέση κυκλοφορούντος ενεργητικού και βραχυπρόθεσμων υποχρεώσεων.</span></div></li>
+      </ol>
+
+      <div class="mix">
+        <h2>Κατανομή κινδύνου στις 23 ερωτήσεις</h2>
+        <div class="mixbar" role="img" aria-label="6 υψηλός, 8 μέτριος, 7 χαμηλός, 2 μη εφαρμόσιμη ή μη τεκμηριώσιμη">
+          <div style="flex:6; background:var(--red)">6</div>
+          <div style="flex:8; background:var(--amber)">8</div>
+          <div style="flex:7; background:var(--green)">7</div>
+          <div style="flex:2; background:var(--grey)">2</div>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--red)"></i>Υψηλός</span>
+          <span><i style="background:var(--amber)"></i>Μέτριος</span>
+          <span><i style="background:var(--green)"></i>Χαμηλός</span>
+          <span><i style="background:var(--grey)"></i>Μη εφαρμόσιμη / μη τεκμηριώσιμη</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="fig">
+        <h3>Πώς προκύπτουν οι ελεύθερες ταμειακές ροές 2024</h3>
+        <svg viewBox="0 0 320 150" role="img" aria-label="Γέφυρα ταμειακών ροών σε χιλιάδες ευρώ">
+          <line x1="8" x2="312" y1="54.2" y2="54.2" stroke="var(--ink-2)" stroke-width=".8"/>
+          <text x="312" y="51" font-size="6.5" fill="var(--ink-2)" text-anchor="end">0</text>
+          <!-- 1: underlying op CF -1078 -->
+          <rect x="16" y="54.2" width="44" height="68.1" fill="var(--red)"/>
+          <text x="38" y="131" font-size="7.5" font-weight="700" fill="var(--ink)" text-anchor="middle">‑1.078</text>
+          <!-- 2: prepaid subscriptions +1610 -->
+          <line x1="60" x2="76" y1="122.3" y2="122.3" stroke="var(--ink-2)" stroke-width=".6" stroke-dasharray="2 2"/>
+          <rect x="76" y="20.6" width="44" height="101.7" fill="var(--amber)"/>
+          <text x="98" y="16" font-size="7.5" font-weight="700" fill="var(--ink)" text-anchor="middle">+1.610</text>
+          <!-- 3: op CF 532 -->
+          <line x1="120" x2="136" y1="20.6" y2="20.6" stroke="var(--ink-2)" stroke-width=".6" stroke-dasharray="2 2"/>
+          <rect x="136" y="20.6" width="44" height="33.6" fill="var(--grey)"/>
+          <text x="158" y="16" font-size="7.5" font-weight="700" fill="var(--ink)" text-anchor="middle">532</text>
+          <!-- 4: capex -1481 -->
+          <line x1="180" x2="196" y1="20.6" y2="20.6" stroke="var(--ink-2)" stroke-width=".6" stroke-dasharray="2 2"/>
+          <rect x="196" y="20.6" width="44" height="93.5" fill="var(--red)" opacity=".55"/>
+          <text x="218" y="123" font-size="7.5" font-weight="700" fill="var(--ink)" text-anchor="middle">‑1.481</text>
+          <!-- 5: FCF -949 -->
+          <line x1="240" x2="256" y1="114.1" y2="114.1" stroke="var(--ink-2)" stroke-width=".6" stroke-dasharray="2 2"/>
+          <rect x="256" y="54.2" width="44" height="59.9" fill="var(--red)"/>
+          <text x="278" y="123" font-size="7.5" font-weight="700" fill="var(--ink)" text-anchor="middle">‑949</text>
+          <g font-size="6.4" fill="var(--ink-2)" text-anchor="middle">
+            <text x="38" y="142">Λειτουργία χωρίς</text><text x="38" y="149">προεισπράξεις</text>
+            <text x="98" y="142">Αύξηση</text><text x="98" y="149">προεισπράξεων</text>
+            <text x="158" y="142">Λειτουργικές</text><text x="158" y="149">ταμειακές ροές</text>
+            <text x="218" y="142">Επενδύσεις</text><text x="218" y="149">(λογισμικό, έδρα)</text>
+            <text x="278" y="142" font-weight="700" fill="var(--ink)">FCF</text><text x="278" y="149">2023: +987</text>
+          </g>
+        </svg>
+        <span class="cap">χιλ. € · Η ανάπτυξη χρηματοδοτείται από προεισπράξεις πελατών και κεφάλαια της μητρικής.</span>
+      </div>
+
+      <div class="fig">
+        <h3>Τι στηρίζει τα ίδια κεφάλαια</h3>
+        <svg viewBox="0 0 320 78" role="img" aria-label="Ίδια κεφάλαια 301, άυλα 3.260, ενσώματη καθαρή θέση -2.960 χιλ. ευρώ">
+          <line x1="205.2" x2="205.2" y1="4" y2="74" stroke="var(--ink-2)" stroke-width=".8"/>
+          <g font-size="7.2" fill="var(--ink)">
+            <text x="0" y="17">Ίδια κεφάλαια</text>
+            <text x="0" y="41">Άυλα στοιχεία</text>
+            <text x="0" y="65" font-weight="700">Ενσώματη καθαρή θέση</text>
+          </g>
+          <rect x="205.2" y="8" width="9.6" height="13" fill="var(--grey)"/>
+          <text x="218" y="18" font-size="7.2" font-weight="700" fill="var(--ink)">301</text>
+          <rect x="205.2" y="32" width="103.5" height="13" fill="var(--amber)"/>
+          <text x="300" y="42" font-size="7.2" font-weight="700" fill="var(--paper)" text-anchor="end">3.260</text>
+          <rect x="111.3" y="56" width="93.9" height="13" fill="var(--red)"/>
+          <text x="116" y="66" font-size="7.2" font-weight="700" fill="var(--paper)">‑2.960</text>
+        </svg>
+        <span class="cap">χιλ. € · Άυλα = 10,8× τα ίδια κεφάλαια: πελατειακές σχέσεις MAPFRE 2,32 εκατ. € και λογισμικό 0,94 εκατ. €.</span>
+      </div>
+
+      <div class="facts">
+        <div><span>Κύκλος εργασιών</span><b>13,09 εκατ. € (+17,3%)</b></div>
+        <div><span>Μικτό περιθώριο</span><b>13,5% (από 15,7%)</b></div>
+        <div><span>ROE (DuPont)</span><b>‑455%</b></div>
+        <div><span>Τραπεζικός δανεισμός</span><b>0 €</b></div>
+        <div><span>Μη δεδουλευμένα έσοδα</span><b>5,98 εκατ. €</b></div>
+        <div><span>Διαθέσιμα</span><b>1,86 εκατ. €</b></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot"><span>Πηγή: ΧΚ 31/12/2024 (ΔΠΧΑ), Γενικό και Αναλυτικό Καθολικό (υποθετικά), έκθεση «Due Diligence 23 Ερωτήσεις» 25/11/2026 · Videobots</span><span>1 / 2</span></footer>
+</section>
+
+<!-- ============ SHEET 2 ============ -->
+<section class="sheet" aria-label="Σελίδα 2">
+  <div style="display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; border-bottom:2px solid var(--brand); padding-bottom:5px">
+    <h2 style="font-size:13pt">Οι 23 ερωτήσεις με μια ματιά</h2>
+    <div class="legend">
+      <span><i style="background:var(--red); border-radius:50%"></i>Υψηλός</span>
+      <span><i style="background:var(--amber); border-radius:50%"></i>Μέτριος</span>
+      <span><i style="background:var(--green); border-radius:50%"></i>Χαμηλός</span>
+      <span><i style="border:1.5px solid var(--grey); border-radius:50%"></i>Μ/Ε · Μ/Τ</span>
+      <span>Τ = τεκμηριωμένη · Μ = μερική απάντηση</span>
+    </div>
+  </div>
+
+  <div class="grid23">
+    <div class="col">
+      <div class="sec">
+        <h3>Α · Ενεργητικό &amp; ποιότητα απαιτήσεων</h3>
+        <div class="row"><span class="n">1</span><span class="dot y"></span><span class="t">Ενηλικίωση &amp; επισφάλειες<em>Μ</em></span><span class="f">Επισφάλειες 887 χιλ. € καλυμμένες 100%· δεν υπάρχει πίνακας ενηλικίωσης.</span></div>
+        <div class="row"><span class="n">2</span><span class="dot r"></span><span class="t">Συγκέντρωση πελατών<em>Μ</em></span><span class="f">ERGO 49,4% του τζίρου (2023: 60,3%)· άγνωστη η κατανομή του υπόλοιπου 50,6%.</span></div>
+        <div class="row"><span class="n">3</span><span class="dot w"></span><span class="t">Αποθέματα<em>Μ/Ε</em></span><span class="f">Εταιρεία υπηρεσιών χωρίς αποθέματα.</span></div>
+        <div class="row"><span class="n">4</span><span class="dot g"></span><span class="t">Αξία ενσώματων παγίων<em>Τ</em></span><span class="f">1,41 εκατ. € σε ιστορικό κόστος, χωρίς ακίνητα και βάρη.</span></div>
+        <div class="row"><span class="n">5</span><span class="dot y"></span><span class="t">Δεσμευμένα διαθέσιμα<em>Μ</em></span><span class="f">Προθεσμιακή 1,0 εκατ. € πιθανό collateral· αν ισχύει, ελεύθερα 858 χιλ. €.</span></div>
+      </div>
+      <div class="sec">
+        <h3>Β · Παθητικό, δανεισμός &amp; υποχρεώσεις</h3>
+        <div class="row"><span class="n">6</span><span class="dot g"></span><span class="t">Διάρθρωση χρέους<em>Τ</em></span><span class="f">Μηδενικός δανεισμός· μισθώσεις 194 χιλ. €, 76% εντός έτους.</span></div>
+        <div class="row"><span class="n">7</span><span class="dot w"></span><span class="t">Ρήτρες δανείων<em>Μ/Τ</em></span><span class="f">Δεν γνωστοποιούνται οι όροι του ορίου 1 εκατ. € (Τρ. Πειραιώς).</span></div>
+        <div class="row"><span class="n">8</span><span class="dot y"></span><span class="t">Πελάτες vs προμηθευτές<em>Τ</em></span><span class="f">Είσπραξη 35 ημ., πληρωμή 44 ημ.· το περιθώριο έπεσε από 36 σε 9 ημέρες.</span></div>
+        <div class="row"><span class="n">9</span><span class="dot g"></span><span class="t">Οφειλές Δημοσίου<em>Τ</em></span><span class="f">Μόνο τρέχουσες· πιστοποιητικά συμμόρφωσης 2018–2023 χωρίς επιφύλαξη.</span></div>
+        <div class="row"><span class="n">10</span><span class="dot g"></span><span class="t">Επίδικα &amp; προβλέψεις<em>Μ</em></span><span class="f">Χωρίς ουσιώδεις επίδικες· κρίσιμη η επάρκεια δεδουλευμένων 1,30 εκατ. €.</span></div>
+      </div>
+      <div class="sec">
+        <h3>Ε · Οι τρεις αδιαπραγμάτευτοι δείκτες</h3>
+        <div class="row"><span class="n">21</span><span class="dot r"></span><span class="t">Προσαρμοσμένη ρευστότητα<em>Τ</em></span><span class="f">0,26 (απλή 0,42)· εύρος 0,26–1,15 ανάλογα με το κόστος των προεισπράξεων.</span></div>
+        <div class="row"><span class="n">22</span><span class="dot y"></span><span class="t">Καθαρό χρέος / EBITDA<em>Τ</em></span><span class="f">Μη ερμηνεύσιμος· καθαρά ταμειακά 1,66 εκατ. €, EBITDA ‑171 χιλ. €.</span></div>
+        <div class="row"><span class="n">23</span><span class="dot g"></span><span class="t">Κύκλος μετατροπής μετρητών<em>Τ</em></span><span class="f">‑8,9 ημέρες· χρηματοδότηση από πελάτες (2023: ‑36,5).</span></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="sec">
+        <h3>Γ · Ίδια κεφάλαια, αντοχή &amp; αποδοτικότητα</h3>
+        <div class="row"><span class="n">11</span><span class="dot r"></span><span class="t">Βάση κερδών<em>Τ</em></span><span class="f">Αποτελέσματα εις νέον ‑1,37 εκατ. €· καμία βάση κερδών ή αποθεματικό αναπροσαρμογής.</span></div>
+        <div class="row"><span class="n">12</span><span class="dot y"></span><span class="t">Ποιότητα ΑΜΚ<em>Τ</em></span><span class="f">2,90 εκατ. € μετρητά· τα 2,75 εκατ. € επέστρεψαν στη μέτοχο 18 ημέρες μετά. Καθαρό όφελος 150 χιλ. €.</span></div>
+        <div class="row"><span class="n">13</span><span class="dot g"></span><span class="t">Αφαίμαξη ρευστότητας<em>Μ</em></span><span class="f">Χωρίς μερίσματα· αμοιβές ΔΣ δεν γνωστοποιούνται.</span></div>
+        <div class="row"><span class="n">14</span><span class="dot r"></span><span class="t">Οδηγοί ROE<em>Τ</em></span><span class="f">ROE ‑455% = περιθώριο ‑10,45% × ταχύτητα 1,61 × μόχλευση 27,1. Κίνδυνος λειτουργικός, όχι δανειακός.</span></div>
+        <div class="row"><span class="n">15</span><span class="dot r"></span><span class="t">Άυλα στοιχεία<em>Μ</em></span><span class="f">40% του ενεργητικού, 10,8× τα ίδια κεφάλαια· χωρίς έλεγχο απομείωσης (ΔΛΠ 36).</span></div>
+      </div>
+      <div class="sec">
+        <h3>Δ · Στρατηγική βελτίωσης &amp; κρυφοί κίνδυνοι</h3>
+        <div class="row"><span class="n">16</span><span class="dot g"></span><span class="t">Αναβαλλόμενη φορολογία<em>Τ</em></span><span class="f">DTA μόλις 914 €· λανθάνον όφελος ≈ 581 χιλ. € από φορολογικές ζημίες 2,64 εκατ. €.</span></div>
+        <div class="row"><span class="n">17</span><span class="dot y"></span><span class="t">Συνδεδεμένα μέρη<em>Τ</em></span><span class="f">6,47 εκατ. € έσοδα από ERGO· απόκλιση Καθολικού και ΧΚ· μη γνωστοποιημένες επανατιμολογήσεις.</span></div>
+        <div class="row"><span class="n">18</span><span class="dot y"></span><span class="t">Εκτός ισολογισμού<em>Μ</em></span><span class="f">Δεν υπάρχει σημείωση δεσμεύσεων· εγγυήσεις 65 χιλ. €, άδειες λογισμικού άγνωστες.</span></div>
+        <div class="row"><span class="n">19</span><span class="dot y"></span><span class="t">Απελευθέρωση ρευστότητας<em>Μ/Τ</em></span><span class="f">Χωρίς μετρήσιμα μέτρα· ορατός μοχλός η τιμολόγηση 1,13 εκατ. € δουλευμένων.</span></div>
+        <div class="row"><span class="n">20</span><span class="dot r"></span><span class="t">FCF &amp; αυτοχρηματοδότηση<em>Τ</em></span><span class="f">FCF ‑949 χιλ. €· η επενδυτική φάση φαίνεται να ολοκληρώθηκε το 2024.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h2>Αιτήματα προς τη διοίκηση <span class="tag">19 έγγραφα · ερ. = σχετική ερώτηση</span></h2>
+  </div>
+  <div class="reqs">
+    <div class="req p1">
+      <h3>Προτεραιότητα 1 <span>· πριν από κάθε απόφαση</span></h3>
+      <ol>
+        <li>Αποτελέσματα 2025, προϋπολογισμός 2026 <span class="ref">(11)</span></li>
+        <li>Έσοδα top‑10 πελατών 2023–25, λήξεις, ρήτρες <span class="ref">(2)</span></li>
+        <li>Σύμβαση ERGO, επανατιμολογήσεις 2024 <span class="ref">(17)</span></li>
+        <li>Περιθώριο ανά σύμβαση και υπηρεσία <span class="ref">(14)</span></li>
+        <li>Συμφωνία δουλευμένων εσόδων/εξόδων με τιμολόγια 2025 <span class="ref">(10, 21)</span></li>
+        <li>Μη δεδουλευμένα έσοδα ανά πελάτη και μήνα <span class="ref">(20)</span></li>
+        <li>Comfort letter ERGO, απόφαση 40ής ΕΓΣ <span class="ref">(12)</span></li>
+      </ol>
+    </div>
+    <div class="req p2">
+      <h3>Προτεραιότητα 2</h3>
+      <ol start="8">
+        <li>Σύμβαση αλληλόχρεου Τρ. Πειραιώς, ενεχυρίαση προθεσμιακής <span class="ref">(5, 7)</span></li>
+        <li>PPA συναλλαγής MAPFRE, έλεγχος απομείωσης <span class="ref">(15)</span></li>
+        <li>Επιχειρησιακό σχέδιο και capex 2025–27 <span class="ref">(19, 20)</span></li>
+        <li>Δεσμεύσεις &gt;12 μηνών, εγγυητικές επιστολές <span class="ref">(18)</span></li>
+        <li>Ενηλικίωση απαιτήσεων, επισφάλειες ανά οφειλέτη <span class="ref">(1)</span></li>
+      </ol>
+    </div>
+    <div class="req p3">
+      <h3>Προτεραιότητα 3</h3>
+      <ol start="13">
+        <li>Πολιτική πληρωμής συνεργατών <span class="ref">(8)</span></li>
+        <li>Μίσθωμα νέας έδρας, Λ. Συγγρού 173 <span class="ref">(6)</span></li>
+        <li>Ενημερότητες, πιστοποιητικό 2024 <span class="ref">(9)</span></li>
+        <li>Επίδικες απαιτήσεις κατά της εταιρείας <span class="ref">(10)</span></li>
+        <li>Αμοιβές ΔΣ και στελεχών 2023–25 <span class="ref">(13)</span></li>
+        <li>Φορολογικές ζημίες ανά έτος λήξης <span class="ref">(16)</span></li>
+        <li>Μητρώο οχημάτων <span class="ref">(4)</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="concl">
+    <h2>Τελικό πόρισμα</h2>
+    <div class="abc">
+      <div><span class="k">(α) Επιβίωση σε δύσκολες συνθήκες</span><span class="a y">Ναι, βραχυπρόθεσμα</span><p>Χωρίς δανεισμό, με καθαρά ταμειακά 1,66 εκατ. €, όριο 1,0 εκατ. € και ρητή στήριξη της μητρικής. Η αντοχή όμως δεν είναι δική της.</p></div>
+      <div><span class="k">(β) Αυτόνομη ανάπτυξη</span><span class="a r">Όχι, με το σημερινό μοντέλο</span><p>Η ανάπτυξη +17,3% ήρθε με συρρίκνωση του μικτού περιθωρίου: κάθε νέος όγκος αυξάνει την ανάγκη χρηματοδότησης.</p></div>
+      <div><span class="k">(γ) Παραγωγή μετρητών</span><span class="a r">Όχι από τη λειτουργία</span><p>FCF ‑949 χιλ. €. Τα μετρητά προέρχονται από προεισπράξεις πελατών, ευάλωτες σε απώλεια σύμβασης.</p></div>
+    </div>
+    <div class="confirm">
+      <b>Να επιβεβαιωθούν<br>πριν από απόφαση</b>
+      <ul>
+        <li>Το αποτέλεσμα του 2025: έκλεισαν η επενδυτική φάση και η μετάπτωση τον κύκλο ζημιών;</li>
+        <li>Το πραγματικό περιθώριο ανά σύμβαση, ιδίως της ERGO.</li>
+        <li>Η ποιότητα των εκτιμώμενων υπολοίπων τέλους 2024 (δουλευμένα έσοδα και έξοδα).</li>
+      </ul>
+    </div>
+    <p class="bottom">Η εταιρεία χρειάζεται κεφάλαιο ή ανατιμολόγηση, όχι δανεισμό. Τα αιτήματα της λίστας θα καθορίσουν τη διαπραγματευτική θέση.</p>
+  </div>
+
+  <footer class="foot"><span>Κίνδυνος ανά ερώτηση όπως αξιολογήθηκε στην έκθεση. Τα ποσά των Καθολικών είναι ενδεικτικά· υπερισχύουν οι ΧΚ.</span><span>2 / 2</span></footer>
+</section>
