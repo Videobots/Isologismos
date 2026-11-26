@@ -1,0 +1,216 @@
+flowchart TD
+
+    %% =========================================================
+    %% ΕΚΚΙΝΗΣΗ
+    %% =========================================================
+    START(["Χρήστης: /0-full-report URL εταιρεία"]):::startEnd
+
+    %% =========================================================
+    %% ΠΗΓΕΣ ΔΕΔΟΜΕΝΩΝ
+    %% =========================================================
+    subgraph SRC["ΠΗΓΕΣ ΔΕΔΟΜΕΝΩΝ"]
+        direction LR
+        WEB[("Επίσημη ιστοσελίδα<br/>εταιρείας")]:::source
+        NET[("Διαδίκτυο<br/>έρευνα & πηγές")]:::source
+        PDFS[("3 PDF στο GitHub<br/>Ισολογισμός · Γενικό Καθολικό<br/>· Αναλυτικό Καθολικό")]:::source
+    end
+
+    subgraph CFG["ΑΡΧΕΙΑ ΡΥΘΜΙΣΕΩΝ ΤΟΥ AGENT"]
+        direction LR
+        CLAUDE[/"CLAUDE.md<br/>γενικοί κανόνες"/]:::config
+        MEM[/"MEMORY.md<br/>διδάγματα"/]:::config
+        REF[/"reference/<br/>αρχικά prompts"/]:::config
+    end
+
+    %% =========================================================
+    %% 0. ΠΡΟΕΛΕΓΧΟΣ
+    %% =========================================================
+    subgraph PRE["0 · ΠΡΟΕΛΕΓΧΟΣ"]
+        P0["Ανάγνωση CLAUDE.md & MEMORY.md<br/>ορισμός σύντομου ονόματος"]:::process
+        C1{{"Ανοίγει η ιστοσελίδα;"}}:::check
+        C2{{"Λειτουργεί το Google Drive;"}}:::check
+        C3{{"Υπάρχουν τα 3 PDF;"}}:::check
+        C4{{"Υπάρχουν ήδη αποτελέσματα;"}}:::check
+        Q0[/"Ερώτηση στον χρήστη:<br/>ξαναγράψιμο ή συνέχιση<br/>από το βήμα που λείπει"/]:::user
+        P0 --> C1 --> C2 --> C3 --> C4
+        C4 -- "Ναι" --> Q0
+    end
+
+    STOP1(["ΔΙΑΚΟΠΗ<br/>ενημέρωση χρήστη"]):::stop
+
+    START --> P0
+    CLAUDE -.-> P0
+    MEM -.-> P0
+    C1 -- "Όχι" --> STOP1
+    C2 -- "Όχι" --> STOP1
+    C3 -- "Λείπουν" --> Q0
+
+    %% =========================================================
+    %% ΤΑ 8 SKILLS (σειρά εκτέλεσης)
+    %% =========================================================
+    subgraph RUN["ΕΚΤΕΛΕΣΗ ΜΕ ΑΥΣΤΗΡΗ ΣΕΙΡΑ"]
+        S1[["1 · /1-company-profile<br/>Προφίλ εταιρείας ~2000 λ."]]:::skill
+        S2[["2 · /2-pestle<br/>Ανάλυση PESTLE ~2000 λ."]]:::skill
+        S3[["3 · /3-five-forces<br/>5 Δυνάμεις Porter ≥3000 λ."]]:::skill
+        S4[["4 · /4-financial-analysis<br/>Οικονομική έκθεση ~1500 λ."]]:::skill
+        S5[["5 · /5-due-diligence<br/>23 ερωτήσεις stress test"]]:::skill
+        S6[["6 · /6-sw-analysis<br/>Δυνάμεις & Αδυναμίες Kotler"]]:::skill
+        S7[["7 · /7-business-diagnostic<br/>14 διαγνωστικές ερωτήσεις"]]:::skill
+        S8[["8 · /8-profit-improvement<br/>Σχέδιο κερδοφορίας ~5000 λ."]]:::skill
+    end
+
+    C4 -- "Όχι" --> S1
+    Q0 --> S1
+
+    S1 ==> S2 ==> S3 ==> S4 ==> S5 ==> S6 ==> S7 ==> S8
+
+    %% =========================================================
+    %% ΑΠΟΤΕΛΕΣΜΑΤΑ (outputs/)
+    %% =========================================================
+    subgraph OUT["ΑΠΟΤΕΛΕΣΜΑΤΑ · outputs/"]
+        O1>"εταιρεία-profil-ημ/νία.md"]:::output
+        O2>"εταιρεία-pestle-ημ/νία.md"]:::output
+        O3>"εταιρεία-5forces-ημ/νία.md"]:::output
+        O4>"εταιρεία-financial-έτος-ημ/νία.md"]:::output
+        O5>"εταιρεία-due-diligence-έτος-ημ/νία.md"]:::output
+        O6>"εταιρεία-sw-ημ/νία.md"]:::output
+        O7>"εταιρεία-diagnostic-ημ/νία.md"]:::output
+        O8>"εταιρεία-profit-improvement-ημ/νία.md"]:::output
+    end
+
+    S1 --> O1
+    S2 --> O2
+    S3 --> O3
+    S4 --> O4
+    S5 --> O5
+    S6 --> O6
+    S7 --> O7
+    S8 --> O8
+
+    %% =========================================================
+    %% DEPENDENCIES: δεδομένα εισόδου κάθε skill
+    %% =========================================================
+    WEB -.-> S1
+
+    O1 -.-> S2
+    NET -.-> S2
+
+    O1 -.-> S3
+    O2 -.-> S3
+    NET -.-> S3
+
+    PDFS -.-> S4
+
+    PDFS -.-> S5
+    O1 -.-> S5
+    O2 -.-> S5
+    O3 -.-> S5
+    O4 -.-> S5
+
+    O1 -.-> S6
+    O2 -.-> S6
+    O3 -.-> S6
+    O4 -.-> S6
+    O5 -. "αν υπάρχει" .-> S6
+    PDFS -. "όπου χρειάζεται" .-> S6
+    NET -. "για κενά" .-> S6
+
+    O1 -.-> S7
+    O2 -.-> S7
+    O3 -.-> S7
+    O4 -.-> S7
+    O5 -. "αν υπάρχει" .-> S7
+    O6 -.-> S7
+    NET -. "για κενά" .-> S7
+
+    O1 -.-> S8
+    O2 -.-> S8
+    O3 -.-> S8
+    O4 -.-> S8
+    O5 -.-> S8
+    O6 -.-> S8
+    O7 -.-> S8
+
+    REF -.-> RUN
+    MEM -.-> RUN
+
+    %% =========================================================
+    %% ΑΠΟΘΗΚΕΥΣΗ & ΕΛΕΓΧΟΣ ΜΕΤΑ ΑΠΟ ΚΑΘΕ ΒΗΜΑ
+    %% =========================================================
+    subgraph SAVE["ΑΠΟΘΗΚΕΥΣΗ ΜΕΤΑ ΑΠΟ ΚΑΘΕ ΒΗΜΑ"]
+        SV1["Commit · Push · Pull Request<br/>· Συγχώνευση στο main"]:::process
+        SV2["Μετατροπή Markdown σε Google Doc<br/>& επιβεβαίωση περιεχομένου"]:::process
+        VCHK{{"Αποθηκεύτηκε σε<br/>outputs/ + GitHub + Drive;"}}:::check
+        PROG[/"Γραμμή προόδου στον χρήστη<br/>✔ Ν/8 + σύνοψη + σύνδεσμοι"/]:::user
+        SV1 --> VCHK
+        SV2 --> VCHK
+        VCHK -- "Ναι" --> PROG
+    end
+
+    GH[("GitHub<br/>Videobots/Isologismos · main")]:::storage
+    GD[("Google Drive<br/>φάκελος Isologismos")]:::storage
+    STOP2(["ΔΙΑΚΟΠΗ<br/>ενημέρωση χρήστη"]):::stop
+
+    OUT --> SV1
+    OUT --> SV2
+    SV1 --> GH
+    SV2 --> GD
+    VCHK -- "Όχι" --> STOP2
+    PROG -. "επόμενο βήμα" .-> RUN
+
+    %% =========================================================
+    %% ΕΡΩΤΗΣΕΙΣ ΠΡΟΣ ΤΟΝ ΧΡΗΣΤΗ ΚΑΤΑ ΤΗΝ ΕΚΤΕΛΕΣΗ
+    %% =========================================================
+    ASK{"Χρειάζεται έγκριση;<br/>π.χ. λίγο περιεχόμενο site,<br/>ελλείποντα στοιχεία"}:::decision
+    UANS[/"Ο χρήστης απαντά<br/>συνέχεια από το ίδιο σημείο"/]:::user
+    RUN -.-> ASK
+    ASK -- "Ναι" --> UANS
+    UANS -.-> RUN
+
+    %% =========================================================
+    %% ΕΥΡΕΤΗΡΙΟ & ΤΕΛΙΚΗ ΠΑΡΑΔΟΣΗ
+    %% =========================================================
+    subgraph FIN["ΤΕΛΙΚΗ ΦΑΣΗ"]
+        IDX[["Ευρετήριο φακέλου<br/>πίνακας · 5 κύρια ευρήματα<br/>· ανοιχτά ζητήματα"]]:::skill
+        O9>"εταιρεία-full-report-index-ημ/νία.md"]:::output
+        DLV[/"Παράδοση στον χρήστη:<br/>πίνακας με συνδέσμους<br/>+ μία ερώτηση για παρατηρήσεις"/]:::user
+        FB{"Διόρθωση γενικής ισχύος;"}:::decision
+        MEMUP["Πρόταση διδάγματος<br/>→ καταγραφή στο MEMORY.md<br/>μόνο μετά από έγκριση"]:::process
+        RERUN["Επανεκτέλεση μόνο<br/>του σχετικού skill<br/>+ ερώτηση για τα επόμενα"]:::process
+        IDX --> O9 --> DLV --> FB
+        FB -- "Ναι" --> MEMUP
+        FB -- "Αλλαγή σε ανάλυση" --> RERUN
+    end
+
+    END(["ΤΕΛΟΣ<br/>Πλήρης φάκελος εταιρείας"]):::startEnd
+
+    S8 ==> IDX
+    O1 & O2 & O3 & O4 & O5 & O6 & O7 & O8 -.-> IDX
+    O9 --> SV1
+    O9 --> SV2
+    FB -- "Όχι" --> END
+    MEMUP --> END
+    MEMUP -.-> MEM
+
+    %% =========================================================
+    %% ΧΡΩΜΑΤΑ & ΣΤΥΛ
+    %% =========================================================
+    classDef startEnd fill:#2e7d32,stroke:#1b5e20,color:#ffffff,stroke-width:2px
+    classDef stop     fill:#c62828,stroke:#8e0000,color:#ffffff,stroke-width:2px
+    classDef source   fill:#6a1b9a,stroke:#38006b,color:#ffffff
+    classDef config   fill:#fff8e1,stroke:#ff8f00,color:#5d4037
+    classDef process  fill:#eceff1,stroke:#546e7a,color:#263238
+    classDef check    fill:#fff59d,stroke:#f9a825,color:#3e2723
+    classDef decision fill:#ffb74d,stroke:#e65100,color:#3e2723
+    classDef skill    fill:#1565c0,stroke:#0d47a1,color:#ffffff,stroke-width:2px
+    classDef output   fill:#e3f2fd,stroke:#1e88e5,color:#0d47a1
+    classDef storage  fill:#00695c,stroke:#004d40,color:#ffffff,stroke-width:2px
+    classDef user     fill:#f8bbd0,stroke:#ad1457,color:#4a148c
+
+    style SRC  fill:#f3e5f5,stroke:#6a1b9a
+    style CFG  fill:#fffde7,stroke:#ff8f00
+    style PRE  fill:#fafafa,stroke:#9e9e9e
+    style RUN  fill:#e8f0fe,stroke:#1565c0
+    style OUT  fill:#f5faff,stroke:#64b5f6
+    style SAVE fill:#e0f2f1,stroke:#00695c
+    style FIN  fill:#f1f8e9,stroke:#558b2f

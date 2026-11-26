@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DD workflow state (state.json)",
+  "description": "Κατάσταση εκτέλεσης του /9-corporate-due-diligence. Ενημερώνεται μετά από κάθε κόμβο και επιτρέπει το resume.",
+  "type": "object",
+  "required": ["company", "run_date", "current_node", "nodes", "decisions", "loops", "connectors", "path"],
+  "properties": {
+    "company": { "type": "string" },
+    "run_date": { "type": "string", "format": "date" },
+    "workflow_source": { "type": "string", "const": "workflow/Due_Diligence_workflow_2.json" },
+    "review_partner": { "type": "string" },
+    "current_node": {
+      "type": "string",
+      "enum": ["DB1", "DB2", "API1", "DOC1", "ETL", "RECON_DEC", "RECON_FIX", "DATA_READY", "FORK_1", "AN_FIN", "AN_OP", "AN_RISK", "RED_FLAG_DEC", "GOING_CONCERN_DEC", "VAL_DCF", "VAL_LIQ", "CRISIS_JUMP", "SYNTHESIS", "REVIEW_DEC", "REVISIONS", "FINAL_REPORT", "DONE", "ABORTED"]
+    },
+    "nodes": {
+      "type": "object",
+      "description": "Ένα στοιχείο ανά κόμβο (κλειδί = mermaidId χωρίς 'n:').",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "status": { "enum": ["pending", "running", "done", "failed", "skipped"] },
+          "executor": { "type": "string", "description": "π.χ. skill:/4-financial-analysis, subagent:dd-erp-extractor, inline" },
+          "mode": { "enum": ["live", "fallback", "placeholder", "missing", "human"] },
+          "started_at": { "type": "string" },
+          "finished_at": { "type": "string" },
+          "output_files": { "type": "array", "items": { "type": "string" } },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "decisions": {
+      "type": "object",
+      "properties": {
+        "RECON_DEC": { "type": "array", "items": { "$ref": "#/$defs/decision" }, "description": "Ένα στοιχείο ανά κύκλο" },
+        "RED_FLAG_DEC": { "$ref": "#/$defs/decision" },
+        "GOING_CONCERN_DEC": { "$ref": "#/$defs/decision" },
+        "REVIEW_DEC": { "type": "array", "items": { "$ref": "#/$defs/decision" } }
+      }
+    },
+    "loops": {
+      "type": "object",
+      "properties": {
+        "recon": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "review": { "type": "integer", "minimum": 0, "maximum": 3 }
+      }
+    },
+    "connectors": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "status": { "enum": ["live", "fallback", "missing"] },
+          "checked_at": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "path": {
+      "type": "array",
+      "description": "Η διαδρομή που ακολουθήθηκε, π.χ. ['ETL','RECON_DEC:ΟΧΙ','RECON_FIX','ETL','RECON_DEC:ΝΑΙ',...]",
+      "items": { "type": "string" }
+    },
+    "data_lake_manifest": { "type": "string", "description": "Διαδρομή του data-lake/MANIFEST.json μετά το DATA_READY" },
+    "scope_limitations": { "type": "array", "items": { "type": "string" } },
+    "deliverables": {
+      "type": "object",
+      "properties": {
+        "report_file": { "type": "string" },
+        "drive_doc_url": { "type": "string" },
+        "github_url": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "decision": {
+      "type": "object",
+      "required": ["result", "rules"],
+      "properties": {
+        "result": { "type": "string", "description": "π.χ. ΝΑΙ / ΟΧΙ / ΓΚΡΙΖΑ_ΖΩΝΗ" },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "description": "R1..R7, F1..F8, G1..G8" },
+              "outcome": { "enum": ["pass", "fail", "n/a"] },
+              "value": { "type": "string" },
+              "source_ref": { "type": "string" }
+            }
+          }
+        },
+        "confirmed_by_user": { "type": "boolean" },
+        "decided_at": { "type": "string" },
+        "comments": { "type": "string" }
+      }
+    }
+  }
+}
